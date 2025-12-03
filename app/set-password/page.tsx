@@ -12,6 +12,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function SetPasswordPage() {
   const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
 
@@ -51,6 +52,10 @@ export default function SetPasswordPage() {
     e.preventDefault();
     if (!password) {
       setError("Please enter a password.");
+      return;
+    }
+    if (password !== confirm) {
+      setError("Passwords do not match.");
       return;
     }
     setStatus("loading");
@@ -100,6 +105,25 @@ export default function SetPasswordPage() {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          placeholder="********"
+          style={{
+            width: "100%",
+            padding: 14,
+            borderRadius: 14,
+            border: "1px solid #333",
+            background: "#0c0c0c",
+            color: "#fff",
+            marginBottom: 16,
+          }}
+        />
+
+        <label style={{ color: "#eee", fontSize: 14, marginBottom: 8, display: "block" }}>
+          Confirm new password
+        </label>
+        <input
+          type="password"
+          value={confirm}
+          onChange={(e) => setConfirm(e.target.value)}
           placeholder="********"
           style={{
             width: "100%",
